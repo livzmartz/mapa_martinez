@@ -20,7 +20,7 @@ class Mapa extends ActiveRecord
         $this->mapa_nombre = $args['mapa_nombre'] ?? '';
         $this->mapa_latitud = $args['mapa_latitud'] ?? '';
         $this->mapa_longitud = $args['mapa_longitud'] ?? '';
-        $this->mapa_situacion = $args['mapa_situacion'] ?? 1;
+        $this->mapa_situacion = $args['mapa_situacion'] ?? 1; 
     }
 
 }
