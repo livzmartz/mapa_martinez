@@ -15,9 +15,7 @@ document.addEventListener('DOMContentLoaded', (e)=> {
         }
     });
 
-
 })
-
 
 
 document.onreadystatechange = () => {

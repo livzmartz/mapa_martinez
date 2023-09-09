@@ -8,43 +8,40 @@ import L from "leaflet";
 const butonActualizar = document.getElementById("actualizar");
 
 const map = L.map('mapa', {
-    center: [15.52,-90.32],
-    zoom : 5,
-    maxZoom : 15,
-    minZoom : 1,
+    center: [15.52, -90.32],
+    zoom: 8,
+    maxZoom: 15,
+    minZoom: 1,
 })
 const mapLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-	maxZoom: 19,
-	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    maxZoom: 19,
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 })
 
 const carreteraLayer = L.tileLayer('https://tile.waymarkedtrails.org/hiking/{z}/{x}/{y}.png', {
-	maxZoom: 18,
-	attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors | Map style: &copy; <a href="https://waymarkedtrails.org">waymarkedtrails.org</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+    maxZoom: 18,
+    attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors | Map style: &copy; <a href="https://waymarkedtrails.org">waymarkedtrails.org</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
 });
 
 const markerLayer = L.layerGroup();
 const icono = L.icon({
-    iconUrl : './images/cit.png',
-    iconSize : [35, 35]
+    iconUrl: './images/liv.jpg',
+    iconSize: [35, 35]
 })
 
-
-
-L.circle([15.52,-90.32], {radius: 5000}).addTo(markerLayer);
+L.circle([14.57, -90.53], { radius: 5000 }).addTo(markerLayer);
 const popup = L.popup()
-    .setLatLng([15.52,-90.32])
+    .setLatLng([14.57, -90.53])
     .setContent('<p>Hello world!<br />This is a nice popup.</p>')
 
 
+    var latlngs = [
+        [45.51, -122.68],
+        [37.77, -122.43],
+        [34.04, -118.2]
+    ];
 
-var latlngs = [
-    [45.51, -122.68],
-    [37.77, -122.43],
-    [34.04, -118.2]
-];
-
-var polyline = L.polyline(latlngs, {color: 'red'}).addTo(markerLayer);
+var polyline = L.polyline(latlngs, { color: 'red' }).addTo(markerLayer);
 
 
 mapLayer.addTo(map)
@@ -83,9 +80,11 @@ const buscar = async () => {
                     const popup = L.popup()
                         .setLatLng([latitud, longitud])
                         .setContent(`<p>Nombre: ${registro.mapa_nombre}</p>
-                                  
-                        `);
-                   
+                        <p>Latitud: ${registro.mapa_latitud} </p>
+                        <p>Longitud: ${registro.mapa_longitud} </p>`);
+      
+
+
                     NuevoMarcador.bindPopup(popup);
                     NuevoMarcador.addTo(markerLayer);
                 }
@@ -102,18 +101,16 @@ const buscar = async () => {
     }
 }
 
-
+// butonActualizar.addEventListener("click", buscar)
 
 butonActualizar.addEventListener("click", () => {
-
     Toast.fire({
         title: 'Actualizando...',
         icon: 'info',
         toast: true,
         position: 'top-end',
         showConfirmButton: false,
-        timer: 2000 
+        timer: 2000
     });
-
 
 });
