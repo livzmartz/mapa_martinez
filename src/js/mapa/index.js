@@ -1,15 +1,14 @@
 import { Dropdown } from "bootstrap";
 import Swal from "sweetalert2";
-import { validarFormulario, Toast, confirmacion} from "../funciones";
+import { validarFormulario, Toast, confirmacion } from "../funciones";
 import Datatable from "datatables.net-bs5";
-import { lenguaje  } from "../lenguaje";
+import { lenguaje } from "../lenguaje";
 import L from "leaflet";
-
 const butonActualizar = document.getElementById("actualizar");
 
 const map = L.map('mapa', {
     center: [15.52, -90.32],
-    zoom: 8,
+    zoom: 6,
     maxZoom: 15,
     minZoom: 1,
 })
@@ -35,13 +34,13 @@ const popup = L.popup()
     .setContent('<p>Hello world!<br />This is a nice popup.</p>')
 
 
-    var latlngs = [
-        [45.51, -122.68],
-        [37.77, -122.43],
-        [34.04, -118.2]
-    ];
+var latlngs = [
+    // [45.51, -122.68],
+    // [37.77, -122.43],
+    // [34.04, -118.2]
+];
 
-var polyline = L.polyline(latlngs, { color: 'red' }).addTo(markerLayer);
+
 
 
 mapLayer.addTo(map)
@@ -65,8 +64,8 @@ const buscar = async () => {
         const data = await respuesta.json();
 
         console.log(data);
-
-        if (data && data.length > 0) {
+        latlngs=[]
+        if (data && data.length > 0) {           
             data.forEach(registro => {
                 const latitud = parseFloat(registro.mapa_latitud);
                 const longitud = parseFloat(registro.mapa_longitud);
@@ -80,13 +79,13 @@ const buscar = async () => {
                     const popup = L.popup()
                         .setLatLng([latitud, longitud])
                         .setContent(`<p>Nombre: ${registro.mapa_nombre}</p>
-                        <p>Latitud: ${registro.mapa_latitud} </p>
-                        <p>Longitud: ${registro.mapa_longitud} </p>`);
-      
+                                     <p>Latitud: ${latitud}</p>
+                                     <p>Longitud: ${longitud}</p>`);
 
 
                     NuevoMarcador.bindPopup(popup);
                     NuevoMarcador.addTo(markerLayer);
+                    latlngs.push([latitud, longitud]);
                 }
             });
         } else {
@@ -95,17 +94,18 @@ const buscar = async () => {
                 icon: 'info'
             });
         }
+       L.polyline(latlngs, { color: 'red' }).addTo(markerLayer);
+
 
     } catch (error) {
         console.error('Error al cargar los datos desde la base de datos:', error);
     }
 }
 
-// butonActualizar.addEventListener("click", buscar)
 
 butonActualizar.addEventListener("click", () => {
     Toast.fire({
-        title: 'Actualizando...',
+        title: 'Actualizando coordenadas...',
         icon: 'info',
         toast: true,
         position: 'top-end',
@@ -113,4 +113,8 @@ butonActualizar.addEventListener("click", () => {
         timer: 2000
     });
 
+    buscar();
+
 });
+
+buscar()
